@@ -34,14 +34,14 @@ jobs:
 
     - name: Pack
       working-directory: src/work
-      run: tar cJfv ../${{ matrix.config.artifact }} .
+      run: tar cJfv ../${{ matrix.config.artifact }}artifact.xz .
 
 
     - name: Upload
       uses: actions/upload-artifact@v1
       with:
-        path: ./${{ matrix.config.artifact }}
-        name: ${{ matrix.config.artifact }}
+        path: ./${{ matrix.config.artifact }}artifact.xz
+        name: ${{ matrix.config.artifact }}artifact.xz
 
   release:
     if: contains(github.ref, 'tags/v')
@@ -94,7 +94,7 @@ jobs:
     - name: Download artifact
       uses: actions/download-artifact@v1
       with:
-        name: ${{ matrix.config.artifact }}
+        name: ${{ matrix.config.artifact }}artifact.xz
         path: ./
 
     - name: Download URL
@@ -113,8 +113,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.set_upload_url.outputs.upload_url }}
-        asset_path: ./${{ matrix.config.artifact }}
-        asset_name: ${{ matrix.config.artifact }}
+        asset_path: ./${{ matrix.config.artifact }}artifact.xz
+        asset_name: ${{ matrix.config.artifact }}artifact.xz
         asset_content_type: application/x-gtar
 
 
