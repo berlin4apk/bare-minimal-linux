@@ -42,7 +42,7 @@ jobs:
         run: |
           echo "${GITHUB_REF}"
           # copy iso to jumphost and use the git tag as filename
-          # echo rsync bare-minimal-linux.iso bml@jump01.cc.eu-de-1.cloud.sap/repo/iso/${GITHUB_REF}.iso
+          echo rsync bare-minimal-linux.iso bml@jump01.cc.eu-de-1.cloud.sap/repo/iso/${GITHUB_REF}.iso
       # we kill the agent so there is nothing left over for new runs
       - name: kill ssh agent
         env:
