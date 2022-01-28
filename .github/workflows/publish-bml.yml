@@ -43,4 +43,11 @@ jobs:
           # echo rsync bare-minimal-linux.iso bml@jump01.cc.eu-de-1.cloud.sap/repo/iso/${GITHUB_REF}.iso
       # we kill the agent so there is nothing left over for new runs
       - name: kill ssh agent
-        run: ssh-agent -k
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          if ssh-agent -k; then
+            echo "successfully killed the agent"
+          else
+            echo "no agent to kill"
+          fi
