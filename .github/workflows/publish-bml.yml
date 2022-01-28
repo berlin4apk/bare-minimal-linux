@@ -48,7 +48,6 @@ jobs:
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          export SSH_AGENT_PID=${{ env.SSH_AGENT_PID }}
           if ssh-agent -k; then
             echo "successfully killed the agent"
           else
