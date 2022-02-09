@@ -42,17 +42,19 @@ jobs:
         run: |
           # this variable should only be filled for PRs where we have a head and base ref
           # in that case we use the branchname as filename
+          echo $(ssh-add -l)
+          echo "${GITHUB_HEAD_REF}"
           if [[ -n ${GITHUB_HEAD_REF} ]]; then
-            echo "${GITHUB_HEAD_REF}"
             # copy iso to jumphost and use the git branch as filename
             echo rsync -e "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" bare-minimal-linux.iso bml@jump01.cc.eu-de-1.cloud.sap/repo/iso/bml_${GITHUB_HEAD_REF}.iso
+            echo "lets ssh"
             ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no bml@jump01.cc.eu-de-1.cloud.sap "ls -lah /repo/iso/"
-          else
+            #else
             # TODO here we want to use the tag, how?
-            echo "${GITHUB_HEAD_REF}"
+            #echo "${GITHUB_HEAD_REF}"
             # copy iso to jumphost and use the git tag as filename
-            echo rsync bare-minimal-linux.iso bml@jump01.cc.eu-de-1.cloud.sap/repo/iso/bml_${GITHUB_HEAD_REF}-${GITHUB_SHA}.iso
-            ssh bml@jump01.cc.eu-de-1.cloud.sap "ls -lah /repo/iso/"
+            #echo rsync bare-minimal-linux.iso bml@jump01.cc.eu-de-1.cloud.sap/repo/iso/bml_${GITHUB_HEAD_REF}-${GITHUB_SHA}.iso
+            #ssh bml@jump01.cc.eu-de-1.cloud.sap "ls -lah /repo/iso/"
           fi
       # we kill the agent so there is nothing left over for new runs
       - name: kill ssh agent
