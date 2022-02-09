@@ -45,8 +45,8 @@ jobs:
           if [[ -n ${GITHUB_HEAD_REF} ]]; then
             echo "${GITHUB_HEAD_REF}"
             # copy iso to jumphost and use the git branch as filename
-            echo rsync bare-minimal-linux.iso bml@jump01.cc.eu-de-1.cloud.sap/repo/iso/bml_${GITHUB_HEAD_REF}.iso
-            ssh bml@jump01.cc.eu-de-1.cloud.sap "ls -lah /repo/iso/"
+            echo rsync -e "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" bare-minimal-linux.iso bml@jump01.cc.eu-de-1.cloud.sap/repo/iso/bml_${GITHUB_HEAD_REF}.iso
+            ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no bml@jump01.cc.eu-de-1.cloud.sap "ls -lah /repo/iso/"
           else
             # TODO here we want to use the tag, how?
             echo "${GITHUB_HEAD_REF}"
