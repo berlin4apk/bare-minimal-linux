@@ -26,6 +26,19 @@ jobs:
       run: |
         git describe --tags --abbrev=0
         git rev-parse --short HEAD
+        
+    - name: ccache-${{ github.job }}
+      uses: hendrikmuhs/ccache-action@v1.2.2
+      with:
+        key: ${{ github.job }}-${{ runner.os }} # Eg. "some_build-ubuntu-latest"
+        max-size: 500M
+        verbose: 2
+        # variant: sccache
+    - name: 'Add /usr/lib/ccache:/usr/local/opt/ccache/libexec to $PATH'
+      run: |
+        echo "/usr/local/opt/ccache/libexec" >> $GITHUB_PATH
+        echo "/usr/lib/ccache" >> $GITHUB_PATH
+        
     - name: install prerequsites
       run: |
         sudo apt install automake libtool pkg-config # lldpd
