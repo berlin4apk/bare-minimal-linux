@@ -1,0 +1,68 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Publish
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the bare-minimal-linux branch
+  push:
+    branches: [ bare-minimal-linux ]
+  pull_request:
+    branches: [ bare-minimal-linux ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  publish:
+    # The type of runner that the job will run on
+    runs-on: self-hosted
+
+    steps:
+      # thanks to https://www.webfactory.de/blog/use-ssh-key-for-private-repositories-in-github-actions
+      - name: Setup SSH Keys and known_hosts
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          eval $(ssh-agent -a $SSH_AUTH_SOCK) > /dev/null
+          ssh-add - <<< "${{ secrets.BML_USER_PRIVATE_KEY }}"
+          echo "SSH_AGENT_PID=$SSH_AGENT_PID" >> $GITHUB_ENV
+
+
+      - name: get version/pr-nr
+        run: |
+          echo "GITHUB_HEAD_REF: $GITHUB_HEAD_REF"
+          echo "GITHUB_BASE_REF: $GITHUB_BASE_REF"
+      # use rsync over ssh to put the iso in the right folder on the jumphost
+      - name: push iso via rsync
+        env:
+           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          # this variable should only be filled for PRs where we have a head and base ref
+          # in that case we use the branchname as filename
+          echo $(ssh-add -l)
+          echo "${GITHUB_HEAD_REF}"
+          if [[ -n ${GITHUB_HEAD_REF} ]]; then
+            # copy iso to jumphost and use the git branch as filename
+            echo rsync -e "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" bare-minimal-linux.iso bml@jump01.cc.eu-de-1.cloud.sap/repo/iso/bml_${GITHUB_HEAD_REF}.iso
+            echo "lets ssh"
+            ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no bml@jump01.cc.eu-de-1.cloud.sap "ls -lah /repo/iso/"
+            #else
+            # TODO here we want to use the tag, how?
+            #echo "${GITHUB_HEAD_REF}"
+            # copy iso to jumphost and use the git tag as filename
+            #echo rsync bare-minimal-linux.iso bml@jump01.cc.eu-de-1.cloud.sap/repo/iso/bml_${GITHUB_HEAD_REF}-${GITHUB_SHA}.iso
+            #ssh bml@jump01.cc.eu-de-1.cloud.sap "ls -lah /repo/iso/"
+          fi
+      # we kill the agent so there is nothing left over for new runs
+      - name: kill ssh agent
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          if ssh-agent -k; then
+            echo "successfully killed the agent"
+          else
+            echo "no agent to kill"
+          fi
