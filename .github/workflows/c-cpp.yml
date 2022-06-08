@@ -14,11 +14,16 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1
+      uses: hendrikmuhs/ccache-action@v1.2.2
       with:
         key: ${{ matrix.os }}-${{ matrix.type }}
-        max-size: 400M
-
+        max-size: 500M
+        verbose: 2
+        # variant: sccache
+    - name: 'Add /usr/lib/ccache:/usr/local/opt/ccache/libexec to $PATH'
+      run: |
+        echo "/usr/local/opt/ccache/libexec" >> $GITHUB_PATH
+        echo "/usr/lib/ccache" >> $GITHUB_PATH
     - name: apt Install
       run: |
         sudo apt update
@@ -28,7 +33,7 @@ jobs:
 
     - name: build_minimal_linux_live.sh
       run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        # export nullPATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cd src
         ./build_minimal_linux_live.sh
 
