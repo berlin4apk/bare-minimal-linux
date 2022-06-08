@@ -35,7 +35,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         shell: [bash]
         variant: [sccache, ccache]
-        ccache-action-version: [v1.2.1, v1.2.2]
+        # ccache-action-version: [v1.2.1, v1.2.2]
         include:
           - { os: windows-latest, shell: powershell, variant: sccache }
           - { os: windows-latest, shell: powershell, variant: ccache, xfail: true }
@@ -95,7 +95,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         shell: [bash]
         variant: [sccache, ccache]
-        ccache-action-version: [v1.2.1, v1.2.2]
+        # ccache-action-version: [v1.2.1, v1.2.2]
         include:
           - { os: windows-latest, shell: powershell, variant: sccache }
           - { os: windows-latest, shell: powershell, variant: ccache }
@@ -122,7 +122,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         shell: [bash]
         variant: [sccache, ccache]
-        ccache-action-version: [v1.2.1, v1.2.2]
+        # ccache-action-version: [v1.2.1, v1.2.2]
         include:
           - { os: windows-latest, shell: powershell, variant: sccache }
           - { os: windows-latest, shell: powershell, variant: ccache }
@@ -151,7 +151,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         shell: [bash]
         variant: [sccache, ccache]
-        ccache-action-version: [v1.2.1, v1.2.2]
+        # ccache-action-version: [v1.2.1, v1.2.2]
         include:
           - { os: windows-latest, shell: powershell, variant: sccache }
           - { os: windows-latest, shell: powershell, variant: ccache }
@@ -192,7 +192,7 @@ jobs:
     strategy:
       matrix:
         save: [true, false]
-        ccache-action-version: [v1.2.1, v1.2.2]
+        # ccache-action-version: [v1.2.1, v1.2.2]
     steps:
       - uses: actions/checkout@v2
       - name: Run ccache-action
