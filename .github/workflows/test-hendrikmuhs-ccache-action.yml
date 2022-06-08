@@ -45,7 +45,8 @@ jobs:
       - name: Run ccache-action
         id: ccache
         #uses: ./
-        uses: hendrikmuhs/ccache-action@${{ matrix.ccache-action-version }}
+        #uses: hendrikmuhs/ccache-action@${{ matrix.ccache-action-version }}
+        uses: hendrikmuhs/ccache-action@v1.2.2
         with:
           verbose: 2
           variant: ${{ matrix.variant }}
@@ -103,7 +104,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run ccache action
         #uses: ./
-        uses: hendrikmuhs/ccache-action@${{ matrix.ccache-action-version }}
+        #uses: hendrikmuhs/ccache-action@${{ matrix.ccache-action-version }}
+        uses: hendrikmuhs/ccache-action@v1.2.2
         id: output
         with:
           variant: ${{ matrix.variant }}
@@ -131,7 +133,8 @@ jobs:
           echo "RAND=$RANDOM" >> $GITHUB_ENV
       - name: Run ccache action
         #uses: ./
-        uses: hendrikmuhs/ccache-action@${{ matrix.ccache-action-version }}
+        #uses: hendrikmuhs/ccache-action@${{ matrix.ccache-action-version }}
+        uses: hendrikmuhs/ccache-action@v1.2.2
         id: output
         with:
           variant: ${{ matrix.variant }}
@@ -159,7 +162,8 @@ jobs:
           echo "RAND=$RANDOM" >> $GITHUB_ENV
       - name: Run ccache action
         #uses: ./
-        uses: hendrikmuhs/ccache-action@${{ matrix.ccache-action-version }}
+        #uses: hendrikmuhs/ccache-action@${{ matrix.ccache-action-version }}
+        uses: hendrikmuhs/ccache-action@v1.2.2
         id: restore-keys
         with:
           variant: ${{ matrix.variant }}
@@ -179,7 +183,8 @@ jobs:
         shell: bash
       - name: Run ccache-action
         #uses: ./
-        uses: hendrikmuhs/ccache-action@${{ matrix.ccache-action-version }}
+        #uses: hendrikmuhs/ccache-action@${{ matrix.ccache-action-version }}
+        uses: hendrikmuhs/ccache-action@v1.2.2
 
   test_option_save:
     # Test that the 'save' option is available.
@@ -192,6 +197,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run ccache-action
         #uses: ./
-        uses: hendrikmuhs/ccache-action@${{ matrix.ccache-action-version }}
+        #uses: hendrikmuhs/ccache-action@${{ matrix.ccache-action-version }}
+        uses: hendrikmuhs/ccache-action@v1.2.2
         with:
           save: ${{ matrix.save }}
